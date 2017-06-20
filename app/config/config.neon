@@ -1,0 +1,24 @@
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+services:
+	router: App\RouterFactory::createRouter
+
+	- App\Model\UserManager
+	- App\Model\UserModel
+	- App\Model\AccessModel
+	- App\Model\TypeModel
+	- App\Model\TagModel
+	- App\Model\ActionModel
+	- App\Model\RoleModel
+	- App\Model\PostsModel

@@ -1,0 +1,139 @@
+{block content}
+
+<script>
+    $(document).ready(function() {
+        $("a.editremove").click(function() {
+            var action = $(this).attr("data-actions");
+            $.nette.ajax({
+                'url': {link setEdit!},
+                'data': {
+                    tagId: $(this).attr("data-tagId")
+                },
+                start: function () {
+                    var icon = $('<i>', { class: 'icon-gear icon-spin icon-4x' });
+
+                    spinner = spinner.append(icon);
+                    spinner.appendTo('body');
+                    spinner.html("<div style='position: absolute; top: 45px; left: -95px; font-size: 50px; color: rgb(204, 204, 204); text-shadow: 0px 0px 16px rgb(0, 0, 0);'>Načítám...</div>");
+                    spinner.show();
+                },
+                complete: function () {
+                    spinner.hide();
+                    if (action == "edit") {
+                        $('#modalEdit').modal('show');
+                    } else if (action == "remove") {
+                        $('#modalRemove').modal('show');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="top-liner-white">Seznam všech tagů</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6">
+        <h2 class="top-liner-white">Nastavení</h2>
+        {snippet tags}
+            <div class="row left-liner-white">
+                {if !$tags}
+                    <div class="col-xs-12">
+                        Nejsou k dispozici žádné tagy
+                    </div>
+                {else}
+                    <div class="col-xs-12 hr-liner"><hr></div>
+                {/if}
+                {foreach $tags as $t}
+                    <div class="col-xs-8">
+                        {$t->name}
+                    </div>
+                    <div class="col-xs-4">
+                        <a data-actions="edit" data-tagId="{$t->id}" class="btn btn-xs btn-success editremove" data-toggle="modal" data-target="#modalEdit"><i class="fa fa-pencil"></i></a>
+                        <a data-actions="remove" data-tagId="{$t->id}" class="btn btn-xs btn-danger editremove" data-toggle="modal" data-target="#modelRemove"><i class="fa fa-remove"></i></a>
+                    </div>
+                    <div class="col-xs-12 hr-liner"><hr></div>
+                {/foreach}
+            </div>
+        {/snippet}
+    </div>
+    <div class="col-xs-6">
+        <h2 class="top-liner-white">Možnosti</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <a class="btn btn-block btn-warning" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus"></i> Přidat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{snippet modalEdit}
+    {if $edit}
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Editace tagu {$edit->name}</h4>
+                    </div>
+                    {form editTag}
+                        <div class="modal-body">
+                            {input name, 'value' => $edit->name}
+                            {input id, 'value' => $edit->id}
+                        </div>
+                        <div class="modal-footer">
+                            {input save}
+                        </div>
+                    {/form}
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {/if}
+{/snippet}
+
+{snippet modalAdd}
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Nový tag</h4>
+                </div>
+                {form addTag}
+                <div class="modal-body">
+                    {input name}
+                </div>
+                <div class="modal-footer">
+                    {input save}
+                </div>
+                {/form}
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{/snippet}
+
+{snippet modalRemove}
+    {if $edit}
+        <div class="modal fade" id="modalRemove" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Smazání tagu</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Opravdu chcete smazat tag "{$edit->name}"?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a n:href="deleteTag!, $edit->id" class="btn btn-danger">Ano</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {/if}
+{/snippet}
+

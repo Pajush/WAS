@@ -1,0 +1,118 @@
+{dump}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>{ifset title}{include title|stripHtml} | {/ifset}WAS</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="{$basePath}/css/bootstrap.css" rel="stylesheet">
+	<link href="{$basePath}/css/bootstrap-theme.css" rel="stylesheet">
+
+	<!-- CSS Files -->
+	<link href="{$basePath}/css/font-awesome.min.css" rel="stylesheet">
+	<link href="{$basePath}/css/style.css" rel="stylesheet">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+</head>
+
+<body>
+{block scripts}
+	<script src="{$basePath}/js/jquery.js"></script>
+	<script src="{$basePath}/js/bootstrap.min.js"></script>
+	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/nette.ajax.js"></script>
+	<script>
+        var spinner = $('<div>', { id: 'ajax-spinner',css: { display: 'none' } });
+        $.nette.init();
+	</script>
+{/block}
+<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
+					<span class="sr-only">Menu</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand navbar-toggle collapsed" n:href="Dashboard:default"><img src="{$basePath}/img/WAS-logo.png" alt="Logo"></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="visible-xs"><a href="#">Příspěvky</a></li>
+					<li class="visible-xs"><a href="#">Statistiky</a></li>
+					<li class="visible-xs"><a n:href="Tags:default">Tagy</a></li>
+					<li class="visible-xs"><a n:href="Type:default">Typy</a></li>
+					<li class="visible-xs"><a href="#">Přístupy</a></li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Uživatel <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li role="separator" class="divider"></li>
+							<li><a n:href="logOut!">Odhlásit</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+
+<div class="container-fluid">
+	{snippet flashes}
+		<div class="flash-message">
+			<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+		</div>
+		<script>
+			$(function() {
+				setTimeout(function(){
+					$('.flash').slideUp(500);
+				}, 1000);
+			});
+		</script>
+    {/snippet}
+	<div class="row">
+		<menu class="hidden-xs col-sm-4 col-md-2 left-menu">
+			<a class="navbar-brand big" n:href="Dashboard:default"><img src="{$basePath}/img/WAS-logo.png" alt="Logo"></a>
+			<hr>
+			<div class="left-menu">
+				<a class="left-menu {if $menuActive == 'posts'} active{/if}" href="#">Příspěvky</a>
+				<a class="left-menu-add"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+			</div>
+			<div class="left-menu">
+				<a class="left-menu {if $menuActive == 'statistics'} active{/if}" href="#">Statistiky</a>
+				<a class="left-menu-add"><i class="fa fa-download" aria-hidden="true"></i></a>
+			</div>
+			<div class="left-menu">
+				<a class="left-menu {if $menuActive == 'tags'} active{/if}" n:href="Tags:default">Tagy</a>
+			</div>
+			<div class="left-menu">
+				<a class="left-menu {if $menuActive == 'type'} active{/if}" n:href="Type:default">Typy</a>
+			</div>
+			<a class="left-menu {if $menuActive == 'accesses'} active{/if}" href="#">Přístupy</a>
+		</menu>
+		<script>
+			$(document).ready(function(){
+			    var height = $(document).height();
+			    $("menu.left-menu").css( "height", height + "px");
+			});
+		</script>
+		<div class="col-xs-push-0 col-xs-12 col-sm-push-4 col-sm-8 col-md-push-2 col-md-10 content">
+			{include content}
+		</div>
+	</div>
+</div>
+</body>
+</html>

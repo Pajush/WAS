@@ -1,0 +1,83 @@
+{layout none}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>{ifset title}{include title|stripHtml} | {/ifset}WAS</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{$basePath}/css/bootstrap.css" rel="stylesheet">
+    <link href="{$basePath}/css/bootstrap-theme.css" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link href="{$basePath}/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{$basePath}/css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{$basePath}/favicon.ico">
+</head>
+
+<style>
+    body {
+        background: rgba(0,0,0,0.5) url("../../../img/background.jpg") no-repeat top center;
+    }
+</style>
+
+<body>
+    {block scripts}
+        <script src="{$basePath}/js/jquery.js"></script>
+        <script src="{$basePath}/js/bootstrap.min.js"></script>
+        <script src="{$basePath}/js/netteForms.js"></script>
+        <script src="{$basePath}/js/nette.ajax.js"></script>
+        <script>
+            var spinner = $('<div>', { id: 'ajax-spinner',css: { display: 'none' } });
+            $.nette.init();
+        </script>
+    {/block}
+    <div id="wrapper" class="container-fluid">
+        {snippet flashes}
+            <div class="flash-message">
+                <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+            </div>
+            <script>
+                $(function() {
+                    setTimeout(function(){
+                        $('.flash').slideUp(500);
+                    }, 1000);
+                });
+            </script>
+        {/snippet}
+
+        <div class="row login-box">
+            <div class="col-sm-4 col-sm-offset-4 top-liner-white-without-margin">
+                {form loginForm}
+                    <h3 class="box-title">Přihlášení</h3>
+                    <div class="row form-group">
+                        <div class="col-xs-12">
+                            {input username}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12">
+                            {input password}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12">
+                            {input login}
+                        </div>
+                    </div>
+                {/form}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
